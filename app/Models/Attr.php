@@ -18,6 +18,6 @@ class Attr extends Model
 
     public function group()
     {
-        return $this->belongsTo('AttrGroup', 'group_id', 'id');
+        return $this->belongsTo('\App\Models\AttrGroup', 'group_id', 'id');
     } 
 }
