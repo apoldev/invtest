@@ -52,7 +52,8 @@ class ItemController extends Controller
         $validData = $request->validate([
             'title' => 'min:5|max:200',
             'attrs.*' => 'exists:attrs,id',
-            'image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'price' => 'required|numeric|min:0'
         ]);
 
 
@@ -62,6 +63,11 @@ class ItemController extends Controller
 
         $item = new Item($validData);
         $item->save();
+
+        
+        if(!empty($validData['attrs'])){
+            $item->attrs()->syncWithoutDetaching(collect($validData['attrs'])->values());
+        }
 
         if($item){
             return redirect()->route('items.edit', $item->id)->with(['success' => 'Успешно создано']);
@@ -117,7 +123,8 @@ class ItemController extends Controller
         $validData = $request->validate([
             'title' => 'min:5|max:200',
             'attrs.*' => 'exists:attrs,id',
-            'image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'price' => 'required|numeric|min:0'
         ]);
 
         $item = Item::find($id);
@@ -131,7 +138,7 @@ class ItemController extends Controller
 
 
         if(!empty($attrs)){
-            $item->attrs()->sync($attrs->pluck('id')->toArray());
+            $item->attrs()->syncWithoutDetaching($attrs->pluck('id')->toArray());
         }
 
         if(!empty($validData['image'])){
