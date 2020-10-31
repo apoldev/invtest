@@ -7,6 +7,7 @@ use App\Models\Attr;
 use App\Models\Item;
 use App\Models\AttrGroup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
@@ -90,7 +91,8 @@ class ItemController extends Controller
 
         $validData = $request->validate([
             'title' => 'min:5|max:200',
-            'attrs.*' => 'exists:attrs,id'
+            'attrs.*' => 'exists:attrs,id',
+            'image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         $item = Item::find($id);
@@ -105,6 +107,13 @@ class ItemController extends Controller
 
         if(!empty($attrs)){
             $item->attrs()->sync($attrs->pluck('id')->toArray());
+        }
+
+        if(!empty($validData['image'])){
+            
+            Storage::disk('public')->delete($item->image);
+
+            $validData['image'] = Storage::disk('public')->put('images', $validData['image']);
         }
 
         if($item->fill($validData)->save()){
@@ -127,7 +136,9 @@ class ItemController extends Controller
 
         // Отвяжем связи свойств
         $item->attrs()->detach();
-        
+
+        Storage::disk('public')->delete($item->image);
+
         $item->delete();
 
         return back()->with([

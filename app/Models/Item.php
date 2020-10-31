@@ -16,6 +16,7 @@ class Item extends Model
         'title',
         'slug',
         'price',
+        'image'
     ];
 
 
@@ -29,6 +30,12 @@ class Item extends Model
     public function getPriceHumanAttribute()
     {
         return number_format($this->price, 2, ',', ' ');
+    }
+
+    public function getImageUriAttribute()
+    {
+        return preg_match("/^https?:\/\//is", $this->image) ? $this->image : '/storage/' . $this->image;
+
     }
 
     public function attrs()
