@@ -17,6 +17,8 @@
             
         @endif
 
+        <a class="btn btn-primary" href="{{ route('items.create') }}">Добавить</a>
+
         <table class="table">
             @forelse ($items as $item)
                 <tr>

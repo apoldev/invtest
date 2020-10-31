@@ -31,7 +31,13 @@ class ItemController extends Controller
      */
     public function create()
     {
-        //
+        $item = new Item();
+
+        $groups = AttrGroup::with('attrs')->get(["id", "title", "slug"])->toArray();
+
+        $current_attrs = [];
+
+        return view('admin.edit', compact('item', 'groups', 'current_attrs'));
     }
 
     /**
@@ -42,7 +48,26 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $validData = $request->validate([
+            'title' => 'min:5|max:200',
+            'attrs.*' => 'exists:attrs,id',
+            'image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
+
+        if(!empty($validData['image'])){
+            $validData['image'] = Storage::disk('public')->put('images', $validData['image']);
+        }
+
+        $item = new Item($validData);
+        $item->save();
+
+        if($item){
+            return redirect()->route('items.edit', $item->id)->with(['success' => 'Успешно создано']);
+        }
+
+        return back()->withErrors(['success' => 'Успешно создано'])->withInput();
     }
 
     /**

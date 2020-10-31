@@ -2,7 +2,12 @@
 
 
 @section('title')
+@if ($item->exist)
     Редактирование "{{$item->title}}"
+@else 
+    Создание товара
+@endif
+    
 @endsection
 
 @section('content')
@@ -26,8 +31,11 @@
             
         @endif
 
-        <form method="post" action="{{ route('items.update', $item->id) }}" enctype="multipart/form-data">
+        <form method="post" action="{{ $item->exist ? route('items.update', $item->id) : route('items.store') }}" enctype="multipart/form-data">
+            @if ($item->exist)
             @method('PATCH')
+            @endif
+            
             @csrf
             <div class="container">
 
