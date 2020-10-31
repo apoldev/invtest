@@ -31,8 +31,8 @@
             
         @endif
 
-        <form method="post" action="{{ $item->exist ? route('items.update', $item->id) : route('items.store') }}" enctype="multipart/form-data">
-            @if ($item->exist)
+        <form method="post" action="{{ $item->exists ? route('items.update', $item->id) : route('items.store') }}" enctype="multipart/form-data">
+            @if ($item->exists)
             @method('PATCH')
             @endif
             
@@ -52,6 +52,11 @@
                 <div class="form-group">
                     <label>Название</label>
                     <input type="text" class="form-control" name="title" value="{{ old('title', $item->title) }}" >
+                </div>
+
+                <div class="form-group">
+                    <label>Цена</label>
+                    <input type="text" class="form-control" name="price" value="{{ old('price', $item->price) }}" >
                 </div>
 
 
