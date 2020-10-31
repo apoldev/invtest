@@ -2,7 +2,7 @@
 <div class="column col-4">
     <div class="element">
         <div class="element-image">
-            <img src="{{$item->image}}" alt="">
+            <img src="{{$item->image_uri}}" alt="">
         </div>
         <div class="element-title">
             <a href="">{{$item->title}}</a>

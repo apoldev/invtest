@@ -22,7 +22,7 @@
                 <tr>
                     {{-- <td>{{$item->id}}</td> --}}
                     <td> 
-                        <img src="{{$item->image}}" alt="" width="60px">
+                        <img src="{{$item->image_uri}}" alt="" width="60px">
                     </td>
                     <td>{{$item->title}}</td>
                     <td>

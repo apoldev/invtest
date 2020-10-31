@@ -26,7 +26,7 @@
             
         @endif
 
-        <form method="post" action="{{ route('items.update', $item->id) }}">
+        <form method="post" action="{{ route('items.update', $item->id) }}" enctype="multipart/form-data">
             @method('PATCH')
             @csrf
             <div class="container">
@@ -35,7 +35,7 @@
                 <div class="form-group">
                     <p>Изображение</p>
                     <div>
-                        <img src="{{$item->image}}" alt="" width="70px">
+                        <img src="{{$item->image_uri}}" alt="" width="70px">
                     </div>
                     
                     <input type="file" name="image"/>
