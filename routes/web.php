@@ -19,3 +19,7 @@ Route::get('/', function () {
 
 
 Route::get('/catalog', 'App\Http\Controllers\CatalogController@list')->name("catalog");
+
+Route::prefix("admin")->group(function (){
+    Route::resource('items', 'App\Http\Controllers\Admin\ItemController')->names("items");
+});
